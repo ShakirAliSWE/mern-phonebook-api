@@ -1,4 +1,7 @@
 const router = require("express").Router();
+const fs = require("fs");
+const public_profile = "./public/profile";
+
 const {
   getAllContacts,
   saveContact,
@@ -17,6 +20,10 @@ router.post("/save-contact", async (req, res) => {
   let files = req.files;
   try {
     if (files && files.profile) {
+      fs.mkdir(public_profile, { recursive: true }, (err) => {
+        console.error("Error creating profile folder");
+      });
+
       const profile = files.profile;
       const profileName = "profile/" + uniqString() + ".png";
       profile.mv(`./public/${profileName}`);
